@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="pointer.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="content-wrap">
+    <div id="main-content">
+      <article>
+        <header id="article-header">
+          <div id="title-collapse">
+            <div class="vertical-center-outer">
+              <div class="vertical-center-inner">
+                <h1 id="title-holder"></h1>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div id="content" class="content"></div>
+      </article>
+    </div>
+
+    <div id="settings">
+      <button id="init">Init</button>
+      <button id="start">Start</button>
+      <button id="pause">Pause</button>
+
+      <div class="range-slider">
+        <input id="setting-font-size" class="range-slider__range" type="range" value="100" min="50" max="500" step="10">
+        <span class="range-slider__value">0</span>
+      </div>
+
+      <div class="range-slider">
+        <input id="setting-wpm" class="range-slider__range" type="range" value="200" min="10" max="1500" step="10">
+        <span class="range-slider__value">0</span>
+      </div>
+
+      <div class="range-slider">
+        <input id="setting-chunk-size" class="range-slider__range" type="range" value="8" min="1" max="100">
+        <span class="range-slider__value">0</span>
+      </div>
+
+      <div class="range-slider">
+        <input id="setting-contrast" class="range-slider__range" type="range" value="50" min="0" max="100">
+        <span class="range-slider__value">0</span>
+      </div>
+    </div>
+
+    <textarea rows="20" id="original" class="content">
+      This is very interesting (and as has been pointed out in other comments,
+      not exactly a new idea). I think its proper application, though, is in a
+      tool for practicing reading, not for actually reading tests.
+
+      One major thing this approach looses is the inherent non-linearity of
+      text. If I miss a fact and want to back up a bit, or want to pause for a
+      moment and think about something, I can (when reading) without even
+      thinking about it. Even if this approach is faster overall, it makes
+      reading more like listening to audio or watching a video; it's a big pain
+      to rewind or pause.
+
+      Secondly, this is actually slower than true speed reading or skimming
+      because it forces you to read every word. Truly accomplished readers will
+      often read material at a very superficial level, only dipping in and
+      reading consistently when they encounter a novel concept. Essentially, they
+      can use semantic compression to increase their reading speed by only
+      bothering to read what they find to be relevant. This operates on every
+      level, from the page to the chapter to the paragraph to the sentence. It
+      isn't perfect, of course, but it's always possible to back up if one finds
+      crucial information has been missed.
+
+      Finally, even though this tool is truly excellent for breaking the
+      subvocalization habit that hampers most slow readers, once you learn how to
+      read without subvocalizing it becomes a bit redundant. For example, looking
+      at Spritz, I cranked the speed to 500. It felt pretty good, like I was
+      reading fast. Then I went and took a traditional reading speed test and
+      clocked in at 700wpm, with 95% comprehension. So I'm not sure my overall
+      speed is better with Spritz.
+
+      That said, I'll probably keep coming back to this or technologies like
+      this, now that I'm aware of them. They seem a really good way to force
+      oneself into the speed-reading mindset - I have a feeling that doing this
+      for 60 seconds before a normal reading session would improve reading speed
+      substantially.
+    </textarea>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="module" src="pointer.js"></script>
+</body>
+
+</html>
