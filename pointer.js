@@ -4,9 +4,13 @@ let reader;
 const settings = new objects.Settings();
 
 async function init() {
-  const textEl = document.querySelector('#original');
+  const textEl = document.querySelector('#input-text');
   reader = new objects.Reader(document.querySelector('#content'), textEl.value, settings);
 }
+
+// if space is held less than this amount of time then pause permantely
+const shortTouchDuration = 200; 
+let lastPauseStart;
 
 function setupSpacebar() {
   // event = keyup or keydown
@@ -16,6 +20,7 @@ function setupSpacebar() {
       event.preventDefault();
       if (reader && !reader.isPaused) {
         reader.pause();
+        lastPauseStart = Date.now();
       }
     }
   });
@@ -24,7 +29,14 @@ function setupSpacebar() {
     if (event.which === 32 && event.target == document.body) {
       event.preventDefault();
       if (reader && reader.isPaused) {
-        await reader.start();
+        const delta = Date.now() - lastPauseStart;
+        if (lastPauseStart && delta < shortTouchDuration) {
+          lastPauseStart = null;
+          // don't restart
+        } else {
+          lastPauseStart = null;
+          await reader.start();
+        }
       }
     }
   });
@@ -47,6 +59,23 @@ function setupFontSize() {
   });
 }
 
+function renderWidth() {
+  const baseWidth = 35;
+  const scaledWidth = baseWidth * settings.width / 100;
+  document.documentElement.style.setProperty('--setting-width', scaledWidth + 'em');
+}
+
+function setupWidth() {
+  renderWidth();
+  const el = document.querySelector("#setting-width");
+  el.value = settings.width;
+  el.dispatchEvent(new Event('input'));
+  el.addEventListener('input', () => {
+    settings.setWidth(el.value);
+    renderWidth();
+  });
+}
+
 function setupWpm() {
   const el = document.querySelector("#setting-wpm");
   el.value = settings.wpm;
@@ -61,11 +90,18 @@ function setupChunkSize() {
   el.addEventListener('input', () => settings.setChunkSize(el.value));
 }
 
+function renderContrast() {
+  document.documentElement.style.setProperty('--setting-unread-color', `rgb(0, 0, 0, ${settings.contrast}%)`);
+}
+
 function setupContrast() {
   const el = document.querySelector("#setting-contrast");
   el.value = settings.contrast;
   el.dispatchEvent(new Event('input'));
-  el.addEventListener('input', () => settings.setContrast(el.value));
+  el.addEventListener('input', () => {
+    settings.setContrast(el.value);
+    renderContrast();
+  });
 }
 
 function rangeSlider() {
@@ -86,6 +122,7 @@ function rangeSlider() {
 window.addEventListener('load', function() {
   rangeSlider();
   setupFontSize();
+  setupWidth();
   setupWpm();
   setupChunkSize();
   setupContrast();

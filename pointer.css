@@ -1,16 +1,22 @@
 :root {
   --setting-font-size: 16px;
+  --setting-width: 35em;
   --setting-unread-color: #7a7a7a;
   --setting-read-color: #000;
 }
 
+#readme {
+  width: var(--setting-width);
+  margin: 0 auto;
+}
+
 .content {
   font-size: var(--setting-font-size);
+  width: var(--setting-width);
   padding: 0 1em;
   border: 1px solid black;
-  margin: 60px 0 0 0%;
   height: auto;
-  width: 100%;
+  margin: 0 auto;
 }
 
 .content span {
@@ -29,14 +35,9 @@
   color: var(--setting-read-color);
 }
 
-/* #content { */
-/*     padding: 0 1em; */
-/*     border: 1px solid black; */
-/*     /1* width: 35em; *1/ */
-/*     /1* margin: 1em 1em; *1/ */
-/*     margin: 60px 0 0 0%; */
-/*     height: auto; */
-/* } */
+#input-text {
+  width: 100%;
+}
 
 #content-wrap {
 }
@@ -52,15 +53,7 @@
 #main-content {
   margin-bottom: 1em;
   max-width: 100%;
-  /* width: 35em; */
 }
-
-/* #original { */
-/*   padding: 0 1em; */
-/*   border: 1px solid black; */
-/*   margin: 1em 1em; */
-/*   /1* width: 35em; *1/ */
-/* } */
 
 
 *, *:before, *:after {

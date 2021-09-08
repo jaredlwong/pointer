@@ -7,6 +7,9 @@
 </head>
 
 <body>
+  <div id="readme">
+    Tap the spacebar to start/stop. Longpress the spacebar to pause momentarily.
+  </div>
   <div id="content-wrap">
     <div id="main-content">
       <article>
@@ -29,27 +32,37 @@
       <button id="pause">Pause</button>
 
       <div class="range-slider">
+        <label>Font Size</label><br>
         <input id="setting-font-size" class="range-slider__range" type="range" value="100" min="50" max="500" step="10">
         <span class="range-slider__value">0</span>
       </div>
 
       <div class="range-slider">
+        <label>Width</label><br>
+        <input id="setting-width" class="range-slider__range" type="range" value="100" min="50" max="500" step="10">
+        <span class="range-slider__value">0</span>
+      </div>
+
+      <div class="range-slider">
+        <label>WPM</label><br>
         <input id="setting-wpm" class="range-slider__range" type="range" value="200" min="10" max="1500" step="10">
         <span class="range-slider__value">0</span>
       </div>
 
       <div class="range-slider">
+        <label>Chunk Size</label><br>
         <input id="setting-chunk-size" class="range-slider__range" type="range" value="8" min="1" max="100">
         <span class="range-slider__value">0</span>
       </div>
 
       <div class="range-slider">
+        <label>Contrast</label><br>
         <input id="setting-contrast" class="range-slider__range" type="range" value="50" min="0" max="100">
         <span class="range-slider__value">0</span>
       </div>
     </div>
 
-    <textarea rows="20" id="original" class="content">
+    <textarea rows="20" id="input-text">
       This is very interesting (and as has been pointed out in other comments,
       not exactly a new idea). I think its proper application, though, is in a
       tool for practicing reading, not for actually reading tests.

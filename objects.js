@@ -1,14 +1,16 @@
 export class Settings {
   constructor(options = {
     fontSize: 100,
+    width: 100,
     wpm: 200,
     chunkSize: 9,
     contrast: 50,
   }) {
-    this.fontSize = this.setItem('setting-font-size', this.getItem('setting-font-size') ?? fontSize);
-    this.wpm = this.setItem('setting-wpm', this.getItem('setting-wpm') ?? wpm);
-    this.chunkSize = this.setItem('setting-chunk-size', this.getItem('setting-chunk-size') ?? chunkSize);
-    this.contrast = this.setItem('setting-contrast', this.getItem('setting-contrast') ?? contrast);
+    this.fontSize = this.setItem('setting-font-size', this.getItem('setting-font-size') ?? options.fontSize);
+    this.width = this.setItem('setting-width', this.getItem('setting-width') ?? options.width);
+    this.wpm = this.setItem('setting-wpm', this.getItem('setting-wpm') ?? options.wpm);
+    this.chunkSize = this.setItem('setting-chunk-size', this.getItem('setting-chunk-size') ?? options.chunkSize);
+    this.contrast = this.setItem('setting-contrast', this.getItem('setting-contrast') ?? options.contrast);
   }
 
   getItem(name) {
@@ -23,6 +25,11 @@ export class Settings {
   setFontSize(fontSize) {
     this.fontSize = fontSize;
     this.setItem('setting-font-size', fontSize);
+  }
+
+  setWidth(width) {
+    this.width = width;
+    this.setItem('setting-width', width);
   }
 
   setWpm(wpm) {
@@ -63,6 +70,10 @@ export class Reader {
       span.setFrame(contentEl);
       this.totalCharCount += span.charCount();
     };
+
+    // advance past the first word
+    this.markSpanRead(this.curIndex);
+    this.curIndex += 1;
   }
 
   createSpan(text, id) {
@@ -74,7 +85,9 @@ export class Reader {
   processArticle(text) {
     const paragraphs = text.split(/\n\n+/);
     const words = paragraphs.map(p => p.split(/\s+/));
-    const spans = words.map(paragraph => paragraph.map(word => this.createSpan(word)));
+    const spans = words.map(paragraph => paragraph.flatMap(word => {
+      return word.length > 0 ? [this.createSpan(word)] : []
+    }));
     const ps = spans.map(paragraph => {
       const p = document.createElement('p');
       for (let i = 0; i < paragraph.length; ++i) {
@@ -89,11 +102,11 @@ export class Reader {
     let newSpans = [];
     for (let i = 0; i < flattenedSpans.length; ++i) {
       const s = flattenedSpans[i];
-      // s.setAttribute('id', 'word_' + i);
       s.addEventListener('click', () => {
         this.pause();
         this.curIndex = i+1;
-        this.markSpanRead(i);
+        this.markSpansBeforeRead(i);
+        this.markSpansAfterUnread(i);
       });
       newSpans.push(new Span(s, i, s.innerText));
     }
@@ -142,9 +155,21 @@ export class Reader {
     this.spans[i].span.classList.add('isUnread');
   }
 
+  markSpansAfterUnread(i) {
+    for (i += 1; i < this.spans.length; ++i) {
+      this.markSpanUnread(i);
+    }
+  }
+
   markSpanRead(i) {
     this.spans[i].span.classList.remove('isUnread');
     this.spans[i].span.classList.add('isRead');
+  }
+
+  markSpansBeforeRead(i) {
+    for (; i >= 0; --i) {
+      this.markSpanRead(i);
+    }
   }
 
   async start() {
